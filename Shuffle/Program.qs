@@ -17,26 +17,30 @@
         let shuffled = Shuffled(array);
         Message($"Shuffled array: {shuffled}");
 
-        let balancedBoolArray1 = BoolArrayWithEqualDistributionV1(8);
+        let balancedBoolArray1 = BalancedBoolArrayV1(8);
         Message($"Balanced bool array V1: {balancedBoolArray1}");
 
-        let balancedBoolArray2 = BoolArrayWithEqualDistributionV2(8);
+        let balancedBoolArray2 = BalancedBoolArrayV2(8);
         Message($"Balanced bool array V2: {balancedBoolArray2}");
     }
 
     operation Shuffled<'T>(array : 'T[]) : 'T[] {
-        let n = Length(array);
+        let arrayLength = Length(array);
+        if arrayLength <= 1 {
+            return array;
+        }
+
         mutable shuffled = array;
 
-        for i in 0..n - 2 {
-            let j = DrawRandomInt(i, n - 1);
+        for i in 0..arrayLength - 2 {
+            let j = DrawRandomInt(i, arrayLength - 1);
             set shuffled = Swapped(i, j, shuffled);
         }
 
         return shuffled;
     }
 
-    operation BoolArrayWithEqualDistributionV1(size: Int) : Bool[] {
+    operation BalancedBoolArrayV1(size: Int) : Bool[] {
         mutable trueCount = 0;
         mutable falseCount = 0;
         mutable resultArray = [false, size = size];
@@ -65,7 +69,7 @@
         return resultArray;
     }
 
-    operation BoolArrayWithEqualDistributionV2(size: Int) : Bool[] {
+    operation BalancedBoolArrayV2(size: Int) : Bool[] {
         Fact(size % 2 == 0, "Size must be divisble by 2");
         
         let array = [true, size = size/2];
