@@ -43,7 +43,7 @@
     operation BalancedBoolArrayV1(size: Int) : Bool[] {
         mutable trueCount = 0;
         mutable falseCount = 0;
-        mutable resultArray = [false, size = size];
+        mutable resultArray = [];
 
         Fact(size % 2 == 0, "Size must be divisible by 2");
         let halfSize = size / 2;
@@ -51,18 +51,17 @@
         for i in 0..size - 1 {
             if trueCount < halfSize and falseCount < halfSize {
                 let randomBit = DrawRandomBool(0.5);
-                if (randomBit) {
-                    set trueCount = trueCount + 1;
+                if randomBit {
+                    set trueCount += 1;
                 } else {
-                    set falseCount = falseCount + 1;
+                    set falseCount += 1;
                 }
-                set resultArray w/= i <- randomBit;
-            }
-            elif trueCount >= halfSize {
-                set resultArray w/= i <- false;
+                set resultArray += [randomBit];
+            } elif trueCount >= halfSize {
+                set resultArray += [false];
             }
             else {
-                set resultArray w/= i <- true;
+                set resultArray += [true];
             }
         }
 
@@ -70,7 +69,7 @@
     }
 
     operation BalancedBoolArrayV2(size: Int) : Bool[] {
-        Fact(size % 2 == 0, "Size must be divisble by 2");
+        Fact(size % 2 == 0, "Size must be divisible by 2");
         
         let array = [true, size = size/2];
         return Shuffled(Padded(-size, false, array));
