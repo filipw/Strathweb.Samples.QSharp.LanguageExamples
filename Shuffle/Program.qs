@@ -2,7 +2,6 @@
 
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Random;
-    open Microsoft.Quantum.Logical;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Canon;
@@ -37,7 +36,7 @@
             set shuffled = Swapped(i, j, shuffled);
         }
 
-        return shuffled;
+        shuffled
     }
 
     operation BalancedBoolArrayV1(size: Int) : Bool[] {
@@ -50,7 +49,7 @@
 
         for i in 0..size - 1 {
             if trueCount < halfSize and falseCount < halfSize {
-                let randomBit = DrawRandomBool(0.5);
+                let randomBit = DrawRandomInt(0, 1) == 1;
                 if randomBit {
                     set trueCount += 1;
                 } else {
@@ -65,14 +64,14 @@
             }
         }
 
-        return resultArray;
+        resultArray
     }
 
     operation BalancedBoolArrayV2(size: Int) : Bool[] {
         Fact(size % 2 == 0, "Size must be divisible by 2");
         
         let array = [true, size = size/2];
-        return Shuffled(Padded(-size, false, array));
+        Shuffled(Padded(-size, false, array))
     }
 }
 
